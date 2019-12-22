@@ -73,3 +73,4 @@ with open(output_file_path, 'w') as file:
     file.write(f"Average  Change: ${revenue_average_change}"'\n') 
     file.write(f"Greatest Increase in Profits: {greatest_increase_month} (${greatest_increase})"'\n')
     file.write(f"Greatest Decrease in Profits: {greatest_decrease_month} (${greatest_decrease})"'\n')
+
