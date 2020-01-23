@@ -10,6 +10,7 @@ greatest_increase_month = ''
 greatest_decrease = 0
 greatest_decrease_month = ''
 av = 0
+months_list = []
 
 csv_path = os.path.join('budget_data.csv')
 
@@ -19,7 +20,7 @@ with open(csv_path, newline='') as csv_file:
     # print(csv_data)
 
     csv_header = next(csv_data)
-    # print(f"csv_header: {csv_header}")
+    print(f"csv_header: {csv_header}")
 
     
     for row in csv_data:
@@ -34,8 +35,9 @@ with open(csv_path, newline='') as csv_file:
         # print(total_months, int(row[1]), previous_revenue, av)
 
         average_change_list.append(average_change)
+        months_list.append(row[0])
 
-        print(total_months,  average_change)
+        # print(total_months,  average_change)
 
 
         if greatest_increase < average_change:
@@ -52,6 +54,8 @@ with open(csv_path, newline='') as csv_file:
         average_change = 0
 
     revenue_average_change = round(sum(average_change_list)/(len(average_change_list)-1), 2)
+    x = zip(months_list, average_change_list)
+    print(list(x))
 
     print("Financial Analysis" '\n' '--------------------------------------')
     print(f'Total Months: {total_months}')
