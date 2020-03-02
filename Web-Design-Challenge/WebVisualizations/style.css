@@ -15,7 +15,6 @@ h2{
 }
 
 .navbar-brand {
-    text-shadow: 2px 2px 3px rgb(134, 134, 160);
     color: white !important; 
     font-size: 45px;   
 }
@@ -24,16 +23,26 @@ h2{
     font-size: 20px;
 }
 
+.navbar a:hover {
+    color:rgb(161, 206, 238) !important;
+  }
+
 .main img{
     margin-right: 3%;
 }
- .main p{
+
+.main p{
+     text-align: justify;
      font-size: medium;
  }
 
 .right img{
     margin: 10%;
 }
+
+.right img:hover {
+    box-shadow: 5px -5px 5px #888888;
+  }
 
 
 @media (max-width: 768px)
@@ -43,7 +52,10 @@ h2{
         margin-left: -5% !important;  
     }
 
-    
+    .right img{
+        margin:auto;
+        margin-bottom: 2%;
+    }
 } 
 
 
@@ -61,10 +73,49 @@ h2{
 }
   
 
+
 .plot img:hover {
     border: 1px solid #888888;
     box-shadow: 5px -5px 5px #888888;
   }
   
+
+/* ========================data.html======================= */
+
+thead{
+    background-color: rgb(138, 190, 227);
+}
+
+th, td {
+    padding: 2%;
+    text-align: left;
+  }
+
+tr:nth-child(even) {
+    background-color: #bbdff2;
+}
+
+
+/* =============== maxTemp.html================== */
+
+.mainPlot img{
+    margin-bottom: 3%;
+}
+
+.mainPlot p{
+    text-align: justify;
+    font-size: medium;
+}
+
+.activeImg {
+    width: 97%;
+    border: 4px solid rgb(138, 190, 227); 
+    box-shadow: 5px -5px 5px #888888;
+  }
+
+.activeImgH{
+    box-shadow: 5px -5px 5px #888888;
+    border: 4px solid rgb(138, 190, 227); 
+}
 
 
