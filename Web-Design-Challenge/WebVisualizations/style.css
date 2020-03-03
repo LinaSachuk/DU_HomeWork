@@ -1,31 +1,51 @@
 body{
     width: 100%; 
+    background-image: url("Resources/assets/images/bg.jpg");
+    background-size: 100%;
 } 
+
+.jumbotron{
+    background-color: rgba(50, 115, 220, 0.3);
+}
 
 h2{
     color: rgb(55, 170, 250);
 }
 
+.navbar{
+    background-color: rgba(50, 115, 220, 0.3) !important;
+}
+
 .navbar-header{
-    background-color:rgb(55, 170, 250);
+    background-color:rgb(55, 170, 250, 0.3);
     position: relative;
     margin-left: 4.5% !important;
     padding-left: 3%;
-    padding-right: 2%;   
+    padding-right: 2%;
 }
 
 .navbar-brand {
     color: white !important; 
-    font-size: 45px;   
+    font-size: 30px;   
+}
+
+.navbar-brand i{
+    color:rgb(161, 206, 238) !important;
+    font-size: 20px !important;
 }
 
 .nav li{
-    font-size: 20px;
+    font-size: 22px;
+    padding-top: 5px;
 }
 
 .navbar a:hover {
     color:rgb(161, 206, 238) !important;
   }
+
+p{
+    color: whitesmoke;
+}
 
 .main img{
     margin-right: 3%;
@@ -41,7 +61,8 @@ h2{
 }
 
 .right img:hover {
-    box-shadow: 5px -5px 5px #888888;
+    /* border: 0.5px solid rgb(55, 170, 250);  */
+    box-shadow: 10px 10px 40px rgb(55, 170, 250);
   }
 
 
@@ -75,8 +96,8 @@ h2{
 
 
 .plot img:hover {
-    border: 1px solid #888888;
-    box-shadow: 5px -5px 5px #888888;
+    border: 10px solid rgb(55, 170, 250, 0.5); 
+    box-shadow: 10px 10px 50px rgb(55, 170, 250);
   }
   
 
@@ -109,13 +130,15 @@ tr:nth-child(even) {
 
 .activeImg {
     width: 97%;
-    border: 4px solid rgb(138, 190, 227); 
-    box-shadow: 5px -5px 5px #888888;
+    border: 5px solid rgb(55, 170, 250, 0.8); 
+    box-shadow: 10px 10px 50px rgb(55, 170, 250);
+
   }
 
 .activeImgH{
-    box-shadow: 5px -5px 5px #888888;
-    border: 4px solid rgb(138, 190, 227); 
+    border: 5px solid rgb(55, 170, 250, 0.8); 
+    box-shadow: 10px 10px 50px rgb(55, 170, 250);
+
 }
 
 
