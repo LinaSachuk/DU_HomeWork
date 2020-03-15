@@ -1,6 +1,13 @@
 from splinter import Browser
 from bs4 import BeautifulSoup as bs
+import requests
 import time
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+import re
+import pandas as pd
+import os
+
 mars_data = {}
 
 
@@ -11,6 +18,10 @@ def init_browser():
 
 
 def scrape_info():
+    # =================================================================================
+    # getting Mars news
+    # =================================================================================
+
     browser = init_browser()
 
     url = 'https://mars.nasa.gov/news/?page=0&per_page=40&order=publish_date+desc%2Ccreated_at+desc&search=&category=19%2C165%2C184%2C204&blank_scope=Latest'
@@ -31,10 +42,9 @@ def scrape_info():
     mars_data['news_p'] = news_p
 
 
-    # # Close the browser after scraping
+    # Close the browser after scraping
     # browser.quit()
    
-    
     url = 'https://www.jpl.nasa.gov/spaceimages/?search=&category=Mars'
     browser.visit(url)
     
@@ -50,6 +60,82 @@ def scrape_info():
         print(i.img['title'])
         
     browser.quit()
+    
+    # =================================================================================
+    # Getting Mars Featured Image
+    # =================================================================================
+    
+    #launch url
+    url = 'https://www.jpl.nasa.gov/spaceimages/?search=&category=Mars'
+
+    # create a new Chrome session
+    driver = webdriver.Chrome()
+    driver.implicitly_wait(30)
+    driver.get(url)
+
+    driver.find_element_by_id('full_image').click() 
+
+    # more info     
+    driver.find_element_by_partial_link_text('more info').click() 
+
+    soup=bs(driver.page_source, 'lxml')
+    results = soup.find_all('figure', class_='lede')
+
+    for i in results:
+        featured_image_url =  base_url + i.a['href']
+        featured_image_title = i.img['title']
+        # print("=================")
+        # print(featured_image_url)
+        # print(featureed_image_title)
+        
+    mars_data['featured_image_url'] = featured_image_url
+    mars_data['featured_image_title'] = featured_image_title
+
+    driver.quit()
+
+    # =================================================================================
+    # Getting Mars weather
+    # =================================================================================
+
+    url = 'https://twitter.com/marswxreport?lang=en'
+    page = requests.get(url)
+
+    soup = bs(page.content, 'html.parser')
+
+    results = soup.find_all('div', class_='js-tweet-text-container')
+
+    for result in results:
+        if 'InSight sol' in result.text:
+    #         print(result.text)
+            mars_weather = result.text
+            mars_weather = mars_weather.replace('pic.twitter.com',' ').rsplit(' ',1)[0]
+            break
+        
+
+    # print(mars_weather.strip())
+
+    # Adding data to the mars dictionary
+    mars_data['mars_weather'] = mars_weather.strip()
+    print(mars_data)
+     
+     
+    # =================================================================================
+    # Getting Mars Facts
+    # =================================================================================
+    
+    url = 'https://space-facts.com/mars/'
+    tables = pd.read_html(url)
+        
+    mars_profile_df = tables[0]
+    mars_facts_html = mars_profile_df.to_html(index=False, header = False)
+    
+    mars_data['facts'] = mars_facts_html
+    # print(mars_data)
+    
+    
+    # =================================================================================
+    # Getting Mars Hemispheres
+    # =================================================================================
     
     
     

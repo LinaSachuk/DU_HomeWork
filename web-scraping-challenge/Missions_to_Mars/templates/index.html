@@ -15,10 +15,15 @@
       <h1>Visit Mars</h1>
       <p><a class="btn btn-primary btn-lg" href="/scrape" role="button">Get Data!</a></p>
     </div>
-    <!-- <img src="{{ mars.news_title }}" alt="Sloth">
-    <h2>The typical weather in Costa Rica is:</h2> -->
     <h3>news_title: {{ mars.news_title }}</h3>
     <h3>news_p: {{ mars.news_p }}</h3>
+    <img src="{{ mars.featured_image_url }}" alt="Marth">
+    <p>Image title: {{ mars.featured_image_title }}</p>
+
+    <p>Mars Weather: {{ mars.mars_weather }}</p>
+
+    <h3>Mars Facts</h3>
+      {{ mars.facts|safe }}
   </div>
   </div>
 </body>
