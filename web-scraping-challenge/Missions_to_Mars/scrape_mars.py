@@ -1,6 +1,7 @@
 from splinter import Browser
 from bs4 import BeautifulSoup as bs
 import requests
+from selenium.webdriver.common.by import By
 import time
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
@@ -137,9 +138,165 @@ def scrape_info():
     # Getting Mars Hemispheres
     # =================================================================================
     
+
+    hemisphere_image_urls = []
+    # 1
+    #launch url
+    url = 'https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars'
+
+
+    # create a new Chrome session
+    driver = webdriver.Chrome()
+    driver.get(url)
+
+    driver.find_element_by_id('product-section')
+    all_elements = driver.find_elements(By.TAG_NAME, 'h3')
+
+
+
+    heading = all_elements[0]
+    heading.click()
+
+    soup=bs(driver.page_source, 'lxml')
+    #     print(soup)
+
+    h = {}
+
+    results2 = soup.find_all('h2', class_='title')
+
+    for result2 in results2:
+        print(result2.text)
+        h['title'] =result2.text
+
+    results = soup.find_all('div', class_='wide-image-wrapper')
+    for result in results:
+        print('==============')
+        print(result.a['href'])
+        h['img_url'] = result.a['href']
+
+
+    hemisphere_image_urls.append(h)
+    driver.quit()
     
-    
-    
+    # 2
+    #launch url
+    url = 'https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars'
+
+
+    # create a new Chrome session
+    driver = webdriver.Chrome()
+    driver.get(url)
+
+    driver.find_element_by_id('product-section')
+    all_elements = driver.find_elements(By.TAG_NAME, 'h3')
+
+
+
+    heading = all_elements[1]
+    heading.click()
+
+    soup=bs(driver.page_source, 'lxml')
+    #     print(soup)
+
+    h = {}
+
+    results2 = soup.find_all('h2', class_='title')
+
+    for result2 in results2:
+        print(result2.text)
+        h['title'] =result2.text
+
+    results = soup.find_all('div', class_='wide-image-wrapper')
+    for result in results:
+        print('==============')
+        print(result.a['href'])
+        h['img_url'] = result.a['href']
+
+
+    hemisphere_image_urls.append(h)
+    driver.quit()
+
+    # 3
+    #launch url
+    url = 'https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars'
+
+
+    # create a new Chrome session
+    driver = webdriver.Chrome()
+    driver.get(url)
+
+    driver.find_element_by_id('product-section')
+    all_elements = driver.find_elements(By.TAG_NAME, 'h3')
+
+
+
+    heading = all_elements[2]
+    heading.click()
+
+    soup=bs(driver.page_source, 'lxml')
+    #     print(soup)
+
+    h = {}
+
+    results2 = soup.find_all('h2', class_='title')
+
+    for result2 in results2:
+        print(result2.text)
+        h['title'] =result2.text
+
+    results = soup.find_all('div', class_='wide-image-wrapper')
+    for result in results:
+        print('==============')
+        print(result.a['href'])
+        h['img_url'] = result.a['href']
+
+
+    hemisphere_image_urls.append(h)
+    driver.quit()
+
+    # 4
+    #launch url
+    url = 'https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars'
+
+
+    # create a new Chrome session
+    driver = webdriver.Chrome()
+    driver.get(url)
+
+    driver.find_element_by_id('product-section')
+    all_elements = driver.find_elements(By.TAG_NAME, 'h3')
+
+
+
+    heading = all_elements[3]
+    heading.click()
+
+    soup=bs(driver.page_source, 'lxml')
+    #     print(soup)
+
+    h = {}
+
+    results2 = soup.find_all('h2', class_='title')
+
+    for result2 in results2:
+        print(result2.text)
+        h['title'] =result2.text
+
+    results = soup.find_all('div', class_='wide-image-wrapper')
+    for result in results:
+        print('==============')
+        print(result.a['href'])
+        h['img_url'] = result.a['href']
+
+
+    hemisphere_image_urls.append(h)
+    driver.quit()
+
+        # Cutting the last word from titles
+    for i in hemisphere_image_urls:
+        i['title'] = i['title'].rsplit(' ', 1)[0]
+        
+    mars_data['hemisphere_image_urls'] = hemisphere_image_urls
 
     # Return results
     return mars_data

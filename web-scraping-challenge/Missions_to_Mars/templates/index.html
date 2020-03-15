@@ -17,13 +17,26 @@
     </div>
     <h3>news_title: {{ mars.news_title }}</h3>
     <h3>news_p: {{ mars.news_p }}</h3>
-    <img src="{{ mars.featured_image_url }}" alt="Marth">
+    <img src="{{ mars.featured_image_url }}" alt="Mars">
     <p>Image title: {{ mars.featured_image_title }}</p>
 
     <p>Mars Weather: {{ mars.mars_weather }}</p>
 
     <h3>Mars Facts</h3>
       {{ mars.facts|safe }}
+
+     
+     {% for i in mars.hemisphere_image_urls %}
+
+     <div class="col-lg-6">
+      <img src="{{ i.img_url }}" alt="Mars">
+      <p>{{ i.title }}</p>
+     </div>
+
+     {% endfor %}
+
+
+
   </div>
   </div>
 </body>
