@@ -14,35 +14,72 @@
 </head>
 
 <body>
-  <div class="container">
+  <div class="container p-3 my-3 border main">
     <div class="jumbotron text-center">
-      <h1>Mission to  Mars</h1>
-      <p><a class="btn btn-primary btn-lg" href="/scrape" role="button">Scrape New Data</a></p>
+      <h1><strong>Mission to  Mars</strong></h1>
+      <p><a class="btn btn-light btn-lg" href="/scrape" role="button">Scrape New Data</a></p>
     </div>
 
-    <div>
-      <h1>Latest Mars News</h1>
+    <div class='news my-5'>
+      <h2>Latest Mars News</h2>
       <h3>{{ mars.news_title }}</h3>
       <p>{{ mars.news_p }}</p>
     </div>
 
-    <img src="{{ mars.featured_image_url }}" alt="Mars">
-    <p>Image title: {{ mars.featured_image_title }}</p>
+    <div class="row">
+      <div class="col-lg-8 col-m-6 col-sm-12">
+        <div class="card">
+          <h4 class="card-header">Featured Mars Image</h4>
+          <img class="card-img-top" src="{{ mars.featured_image_url }}" alt="Mars Image">
+          <div class="card-body">
+            <p class="card-text">{{ mars.featured_image_title }}</p>
+          </div>
+        </div>
+      </div>
 
-    <p>Mars Weather: {{ mars.mars_weather }}</p>
 
-    <h3>Mars Facts</h3>
-      {{ mars.facts|safe }}
 
-     
-     {% for i in mars.hemisphere_image_urls %}
+      <div class="col-lg-4 col-m-6 col-sm-12 mars-info">
+        <div class="card py-4">
+          <h4 class="card-header text-center">Curent Weather on Mars</h4>
+          <div class="card-body">
+            <p class="card-text">{{ mars.mars_weather }}</p>
+          </div>
+        </div>
 
-     <div class="col-lg-6">
-      <img src="{{ i.img_url }}" alt="Mars">
-      <p>{{ i.title }}</p>
-     </div>
+        <div class="card mt-5 py-4">
+          <h4 class="card-header text-center">Mars Facts</h4>
+          <div class="card-body">
+            {{ mars.facts|safe }}
+          </div>
+        </div>
+    </div>
+
+    </div> 
+
+
+    <div class='row my-5'>
+        <div class="col-lg-12 col-m-12 col-sm-12 text-center">
+          <h1>Mars Hemispheres</h1>
+        </div>
+    </div>
+
+    <div class='row'>
+
+    {% for i in mars.hemisphere_image_urls %}
+
+        <div class="col-lg-6 col-m-6 col-sm-12 p-4">
+          <div class="container">
+            <h2>{{ i.title }}</h2>
+            <img src="{{ i.img_url }}" class="img-thumbnail" alt="Mars"> 
+          </div>
+        </div>
 
      {% endfor %}
+
+    </div>
+
+    
 
 
 

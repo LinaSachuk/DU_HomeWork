@@ -1,7 +1,18 @@
+@import url('https://fonts.googleapis.com/css?family=Cinzel&display=swap');
+
 body {
     margin: 0;
     padding: 0;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    background-color: rgb(227, 157, 144);
+    font-family: "Cinzel", Helvetica, Arial, sans-serif;
+    background-color: rgba(50, 115, 220, 0.2);
+    
   }
   
+.main{
+    background-color:hsl(240, 67%, 94%, 0.5);
+    
+}
+
+.jumbotron{
+    background-color: rgba(50, 115, 220, 0.1);
+}
