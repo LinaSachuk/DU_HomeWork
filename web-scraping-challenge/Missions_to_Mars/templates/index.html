@@ -21,13 +21,13 @@
     </div>
 
     <div class='news my-5'>
-      <h2>Latest Mars News</h2>
+      <h2 class='text-center'>Latest Mars News</h2>
       <h3>{{ mars.news_title }}</h3>
-      <p>{{ mars.news_p }}</p>
+      <h5>{{ mars.news_p }}</h5>
     </div>
 
     <div class="row">
-      <div class="col-lg-8 col-m-6 col-sm-12">
+      <div class="col-lg-7 col-m-6 col-sm-12">
         <div class="card">
           <h4 class="card-header">Featured Mars Image</h4>
           <img class="card-img-top" src="{{ mars.featured_image_url }}" alt="Mars Image">
@@ -39,15 +39,15 @@
 
 
 
-      <div class="col-lg-4 col-m-6 col-sm-12 mars-info">
-        <div class="card py-4">
+      <div class="col-lg-5 col-m-6 col-sm-12 mars-info">
+        <div class="card">
           <h4 class="card-header text-center">Curent Weather on Mars</h4>
           <div class="card-body">
             <p class="card-text">{{ mars.mars_weather }}</p>
           </div>
         </div>
 
-        <div class="card mt-5 py-4">
+        <div class="card mt-4">
           <h4 class="card-header text-center">Mars Facts</h4>
           <div class="card-body">
             {{ mars.facts|safe }}
