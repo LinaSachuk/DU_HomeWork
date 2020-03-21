@@ -23,6 +23,14 @@ button.on("click", function() {
     var inputValue = inputElement.property("value");
 
     console.log(inputValue);
+    
+
+    if(dates.indexOf(inputValue) === -1){
+        // push here because a value of -1 means it's not in the array
+        console.log('I am not here!')
+        document.getElementById("datetime").value = "";
+        document.getElementById("datetime").placeholder = "Try another date ... from 1/1/2010 to 1/13/2010 ";
+    };
 
     var filteredData = tableData.filter(item => item.datetime === inputValue);
 
