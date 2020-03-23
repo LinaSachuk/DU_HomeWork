@@ -2,7 +2,7 @@
 var tableData = data;
 // console.log(data)
 
-// YOUR CODE HERE!
+
 var dates = data.map(item => item.datetime);
 var cities = data.map(item => item.city);
 var states = data.map(item => item.state);
@@ -46,47 +46,63 @@ button.on("click", function() {
     var inputValue = inputElement.property("value");
     inputValue = inputValue.toLowerCase();
     console.log(inputValue);
+
+    if (inputValue === '') {
+        console.log('i am here')
+        d3.select('#searchText').style("color", "orange");
+        var table = d3.select("table");
+        var rows = table.selectAll("tbody tr");
+        var cells = rows.selectAll('td');
+        cells.remove();
+    } else {
+        d3.select('#searchText').style("color", "rgb(142, 151, 159)");
+        var filteredData = tableData.filter(item => item[searchParam] === inputValue);
+
+        console.log(filteredData);
+
+
+        if (filteredData.length > 0) {
+            // clean table cells
+            var table = d3.select("table");
+            var rows = table.selectAll("tbody tr");
+            var cells = rows.selectAll('td');
+            cells.remove();
+            // getting a new data
+            filteredData.forEach((item) => {
+                var row = tbody.append("tr");
+                Object.entries(item).forEach(([key, value]) => {
+                    var cell = row.append("td");
+                    cell.text(value);
+                });
+            });
+
+        } else {
+            // if there is no data, remove a table cells with old data and give a message to the user
+            var table = d3.select("table");
+            var rows = table.selectAll("tbody tr");
+            var cells = rows.selectAll('td');
+            cells.remove();
+            var row = tbody.append("tr");
+            var cell = row.append("td").style('color', "orange");
+            cell.text(`No Data Found for this ${searchParam}!`).style("font-size", "24px");
+
+            document.getElementById("datetime").value = "";
+            document.getElementById("datetime").placeholder = "Try again. ";
+        }
+
+
+
+    };
+
     // console.log(`me ${dates.indexOf(inputValue)}`);
 
 
-    // ||cities.indexOf(inputValue) === -1 || states.indexOf(inputValue) === -1 || countries.indexOf(inputValue) === -1 || shape.indexOf(inputValue) === -1
+    // if (dates.indexOf(inputValue) === -1 && cities.indexOf(inputValue) === -1 && states.indexOf(inputValue) === -1 && countries.indexOf(inputValue) === -1 && shape.indexOf(inputValue) === -1) {
+    //     // push here because a value of -1 means it's not in the array
+    //     console.log('I am not here!')
+    //     document.getElementById("datetime").value = "";
+    //     document.getElementById("datetime").placeholder = "Try again. ";
+    // };
 
-    if (dates.indexOf(inputValue) === -1 && cities.indexOf(inputValue) === -1 && states.indexOf(inputValue) === -1 && countries.indexOf(inputValue) === -1 && shape.indexOf(inputValue) === -1) {
-        // push here because a value of -1 means it's not in the array
-        console.log('I am not here!')
-        document.getElementById("datetime").value = "";
-        document.getElementById("datetime").placeholder = "Try again. ";
-    };
-
-    var filteredData = tableData.filter(item => item[searchParam] === inputValue);
-
-    console.log(filteredData);
-
-
-    if (filteredData.length > 0) {
-        // clean table cells
-        var table = d3.select("table");
-        var rows = table.selectAll("tbody tr");
-        var cells = rows.selectAll('td');
-        cells.remove();
-        // getting a new data
-        filteredData.forEach((item) => {
-            var row = tbody.append("tr");
-            Object.entries(item).forEach(([key, value]) => {
-                var cell = row.append("td");
-                cell.text(value);
-            });
-        });
-
-    } else {
-        // if there is no data, remove a table cells with old data and give a message to the user
-        var table = d3.select("table");
-        var rows = table.selectAll("tbody tr");
-        var cells = rows.selectAll('td');
-        cells.remove();
-        var row = tbody.append("tr");
-        var cell = row.append("td").style('color', "orange");
-        cell.text(`No Data Found for this ${searchParam}!`).style("font-size", "24px");
-    }
 
 });
