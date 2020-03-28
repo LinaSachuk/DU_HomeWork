@@ -1,52 +1,41 @@
-/**
- * Helper function to select data
- * Returns an array of values
- * @param {array} rows
- * @param {integer} index
- * index 0 - id
- * index 1 - otu_ids
- * index 2 - sample_values
- * index 3 - otu_labels
- */
-function unpack(rows, index) {
-    return rows.map(function(row) {
-        return row[index];
-    });
-}
-
-// Submit Button handler
-function handleSubmit() {
+function optionChanged() {
     // Prevent the page from refreshing
-    d3.event.preventDefault();
 
     // Select the input value from the form
-    var stock = d3.select('#selDataset').node().value;
-    console.log(stock);
+    var filter_id = d3.select('#selDataset').property('value');
+    console.log('filter_id:', String(filter_id));
 
     // clear the input value
-    d3.select('#stockInput').node().value = '';
-
+    myPlot(filter_id);
     // Build the plot with the new stock
-    buildPlot(stock);
 }
 
 // Use d3.json() to fetch data from JSON file
 // Incoming data is internally referred to as data
-function myPlot() {
+function myPlot(myid = '940') {
     d3.json('samples.json').then(data => {
         console.log('data:', data);
 
         var ids = data.samples.map(d => d.id);
         console.log('ids:', ids);
 
+        // Add ids to dropdown menu
+
+        for (var i = 0; i < ids.length; i++) {
+            selectBox = d3.select('#selDataset');
+            selectBox.append('option').text(ids[i]);
+        }
+
         // filter sample values by id
-        var sample = data.samples.filter(s => s.id.toString() === '940')[0];
+        var sample = data.samples.filter(i => i.id.toString() === myid)[0];
         console.log(sample);
 
         var id = sample.id;
         console.log('id:', id);
-        // var otu_ids = sample.otu_ids;
-        // console.log('otu_ids:', otu_ids);
+
+        var washFrequency = data.metadata.filter(i => i.id.toString() === id)[0]
+            .wfreq;
+        console.log('washFrequency:', washFrequency);
 
         // top 10 OTUs found in that individual
         // getting sample_values as the values for the bar chart.
@@ -87,6 +76,112 @@ function myPlot() {
 
         // Render the plot to the div tag with id "plot"
         Plotly.newPlot('bar', chartData, layout);
+
+        // Create a bubble chart that displays each sample.
+        // Use otu_ids for the x values.
+        // Use sample_values for the y values.
+        // Use sample_values for the marker size.
+        // Use otu_ids for the marker colors.
+        // Use otu_labels for the text values.
+
+        var traceB = {
+            x: otu_ids,
+            y: sample_values,
+            mode: 'markers',
+            marker: {
+                size: sample_values,
+                color: otu_ids
+            },
+            text: otu_labels
+        };
+
+        // set the layout for the bubble plot
+        var layoutB = {
+            title: ` Bubble chart for each sample`,
+            xaxis: { title: 'OTU id' },
+            yaxis: { title: 'Sample Values' },
+            height: 600,
+            width: 1000
+        };
+
+        // creating data variable
+        var dataB = [traceB];
+
+        // create the bubble plot
+        Plotly.newPlot('bubble', dataB, layoutB);
+
+        // the Gauge Chart
+        // part of data to input
+        var traceGauge = {
+            type: 'pie',
+            mode: 'gauge+number',
+            showlegend: false,
+            hole: 0.3,
+            rotation: 90,
+            values: [
+                81 / 9,
+                81 / 9,
+                81 / 9,
+                81 / 9,
+                81 / 9,
+                81 / 9,
+                81 / 9,
+                81 / 9,
+                81 / 9,
+                81
+            ],
+            text: ['0-1', '1-2', '2-3', '3-4', '4-5', '5-6', '6-7', '7-8', '8-9'],
+            direction: 'clockwise',
+            textinfo: 'text',
+            textposition: 'inside',
+            marker: {
+                colors: [
+                    '#F8F3EB',
+                    '#F4F1E4',
+                    '#E9E7C8',
+                    '#D5E599',
+                    '#B6CD8F',
+                    '#8AC085',
+                    '#88BB8D',
+                    '#83B588',
+                    '#83B588',
+                    'white'
+                ],
+                labels: ['0-1', '1-2', '2-3', '3-4', '4-5', '5-6', '6-7', '7-8', '8-9'],
+                hoverinfo: 'label'
+            }
+        };
+
+        // needle
+
+        var degrees = 90,
+            radius = 0.5;
+        var radians = (degrees * Math.PI) / 180;
+        var x = -1 * radius * Math.cos(radians) * 2;
+        var y = radius * Math.sin(radians);
+
+        var gaugeLayout = {
+            width: 500,
+            height: 500,
+            shapes: [{
+                type: 'line',
+                x0: 0.5,
+                y0: 0.5,
+                x1: 0.6,
+                y1: 0.6,
+                line: {
+                    color: 'black',
+                    width: 3
+                }
+            }],
+            title: `Belly Button Washing Frequency for Subject ${id}`,
+            xaxis: { visible: false, range: [-1, 1] },
+            yaxis: { visible: false, range: [-1, 1] }
+        };
+
+        var dataGauge = [traceGauge];
+
+        Plotly.plot('gauge', dataGauge, gaugeLayout);
     });
 }
 
