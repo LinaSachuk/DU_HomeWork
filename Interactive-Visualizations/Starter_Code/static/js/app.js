@@ -3,7 +3,7 @@ function optionChanged() {
 
     // Select the input value from the form
     var filter_id = d3.select('#selDataset').property('value');
-    console.log('filter_id:', String(filter_id));
+    console.log('filter_id:', filter_id);
 
     // clear the input value
     myPlot(filter_id);
@@ -12,7 +12,7 @@ function optionChanged() {
 
 // Use d3.json() to fetch data from JSON file
 // Incoming data is internally referred to as data
-function myPlot(myid = '940') {
+function myPlot(fid = '940') {
     d3.json('samples.json').then(data => {
         console.log('data:', data);
 
@@ -20,20 +20,19 @@ function myPlot(myid = '940') {
         console.log('ids:', ids);
 
         // Add ids to dropdown menu
-
         for (var i = 0; i < ids.length; i++) {
             selectBox = d3.select('#selDataset');
             selectBox.append('option').text(ids[i]);
         }
 
         // filter sample values by id
-        var sample = data.samples.filter(i => i.id.toString() === myid)[0];
+        var sample = data.samples.filter(i => i.id.toString() === fid)[0];
         console.log(sample);
 
         var id = sample.id;
         console.log('id:', id);
 
-        var washFrequency = data.metadata.filter(i => i.id.toString() === id)[0]
+        var washFrequency = data.metadata.filter(i => i.id.toString() === fid)[0]
             .wfreq;
         console.log('washFrequency:', washFrequency);
 
@@ -98,7 +97,7 @@ function myPlot(myid = '940') {
         // set the layout for the bubble plot
         var layoutB = {
             title: ` Bubble chart for each sample`,
-            xaxis: { title: 'OTU id' },
+            xaxis: { title: 'OTU ID' },
             yaxis: { title: 'Sample Values' },
             height: 600,
             width: 1000
@@ -181,7 +180,7 @@ function myPlot(myid = '940') {
 
         var dataGauge = [traceGauge];
 
-        Plotly.plot('gauge', dataGauge, gaugeLayout);
+        Plotly.newPlot('gauge', dataGauge, gaugeLayout);
     });
 }
 
