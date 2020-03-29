@@ -36,6 +36,20 @@ function myPlot(fid = '940') {
       .wfreq;
     console.log('washFrequency:', washFrequency);
 
+    // getting sample-metadata
+    var metadata = data.metadata.filter(i => i.id.toString() === fid)[0];
+    console.log('metadata:', metadata);
+
+    var metadata_card = d3.select('#sample-metadata');
+
+    // refreshing metadata_card
+    metadata_card.html('');
+
+    for (const [key, value] of Object.entries(metadata)) {
+      console.log(key, value);
+      metadata_card.append('p').text(`${key}: ${value}`);
+    }
+
     // top 10 OTUs found in that individual
     // getting sample_values as the values for the bar chart.
     var sample_values = sample.sample_values.slice(0, 10).reverse();
