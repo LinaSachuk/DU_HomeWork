@@ -3,7 +3,7 @@ function optionChanged() {
 
   // Select the input value from the form
   var filter_id = d3.select('#selDataset').property('value');
-  console.log('filter_id:', filter_id);
+  //   console.log('filter_id:', filter_id);
 
   // clear the input value
   myPlot(filter_id);
@@ -19,6 +19,9 @@ function myPlot(fid = '940') {
     var ids = data.samples.map(d => d.id);
     console.log('ids:', ids);
 
+    var values = data.samples.map(d => d.sample_values[0]);
+    console.log('values:', values);
+
     // Add ids to dropdown menu
     for (var i = 0; i < ids.length; i++) {
       selectBox = d3.select('#selDataset');
@@ -30,15 +33,15 @@ function myPlot(fid = '940') {
     console.log(sample);
 
     var id = sample.id;
-    console.log('id:', id);
+    // console.log('id:', id);
 
     var washFrequency = data.metadata.filter(i => i.id.toString() === fid)[0]
       .wfreq;
-    console.log('washFrequency:', washFrequency);
+    // console.log('washFrequency:', washFrequency);
 
     // getting sample-metadata
     var metadata = data.metadata.filter(i => i.id.toString() === fid)[0];
-    console.log('metadata:', metadata);
+    // console.log('metadata:', metadata);
 
     var metadata_card = d3.select('#sample-metadata');
 
@@ -53,7 +56,7 @@ function myPlot(fid = '940') {
     // top 10 OTUs found in that individual
     // getting sample_values as the values for the bar chart.
     var sample_values = sample.sample_values.slice(0, 10).reverse();
-    console.log('sample_values:', sample_values);
+    // console.log('sample_values:', sample_values);
 
     // getting otu_ids as the labels for the bar chart.
     var otu_ids = sample.otu_ids.slice(0, 10).reverse();
@@ -61,14 +64,17 @@ function myPlot(fid = '940') {
 
     // getting otu_labels as the hovertext for the chart.
     var otu_labels = otu_ids.map(d => 'OTU ' + d);
-    console.log('otu_labels:', otu_labels);
+    // console.log('otu_labels:', otu_labels);
 
     var trace1 = {
       x: sample_values,
       y: otu_labels,
       text: otu_ids,
       type: 'bar',
-      orientation: 'h'
+      orientation: 'h',
+      marker: {
+        color: '#83B588'
+      }
     };
 
     // data
@@ -78,13 +84,7 @@ function myPlot(fid = '940') {
     var layout = {
       title: `Top 10 OTUs found in Subject ${id}`,
       xaxis: { title: 'Sample Values' },
-      yaxis: { title: 'OTU ids' },
-      margin: {
-        l: 100,
-        r: 100,
-        t: 100,
-        b: 100
-      }
+      yaxis: { title: '' }
     };
 
     // Render the plot to the div tag with id "plot"
@@ -112,9 +112,9 @@ function myPlot(fid = '940') {
     var layoutB = {
       title: ` Bubble chart for each sample`,
       xaxis: { title: `OTU ID ${fid}` },
-      yaxis: { title: 'Sample Values' },
-      height: 600,
-      width: 1000
+      tickmode: 'linear',
+
+      yaxis: { title: 'Sample Values' }
     };
 
     // creating data variable
@@ -129,12 +129,11 @@ function myPlot(fid = '940') {
       {
         domain: { x: [0, 1], y: [0, 1] },
         value: washFrequency,
-        title: { text: `Belly Button Washing Frequency for Subject ${id}` },
         type: 'indicator',
         mode: 'gauge+number',
         gauge: {
           axis: { range: [null, 9] },
-          bar: { color: '#5b8d61' },
+          bar: { color: '#83A388' },
           steps: [
             { range: [0, 1], color: '#F8F3EB' },
             { range: [1, 2], color: '#F4F1E4' },
@@ -144,13 +143,18 @@ function myPlot(fid = '940') {
             { range: [5, 6], color: '#8AC085' },
             { range: [6, 7], color: '#88BB8D' },
             { range: [7, 8], color: '#83B588' },
-            { range: [8, 9], color: '#5b8d61' }
+            { range: [8, 9], color: '#83A388' }
           ]
         }
       }
     ];
 
-    var layout = { width: 500, height: 400 };
+    var layout = {
+      title: {
+        text: `Belly Button Washing Frequency <br> Scrubs per Week`
+      }
+    };
+
     Plotly.newPlot('gauge', data, layout);
   });
 }
