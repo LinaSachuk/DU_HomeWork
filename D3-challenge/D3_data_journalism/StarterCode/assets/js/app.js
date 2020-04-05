@@ -28,7 +28,7 @@ console.log('I am here!');
 // Initial Params
 var chosenXAxis = 'poverty';
 var chosenYAxis = 'healthcare';
-var radius = 20;
+var radius = 17;
 
 // function used for updating x-scale var upon click on axis label
 function xScale(data, chosenXAxis) {
@@ -150,6 +150,16 @@ function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
   return circlesGroup;
 }
 
+function updateState(chosenXAxis, chosenYAxis, newXScale, newYScale, states) {
+  states
+    .transition()
+    .duration(1000)
+    .attr('x', (d) => newXScale(d[chosenXAxis]))
+    .attr('y', (d) => newYScale(d[chosenYAxis]) + radius / 5);
+
+  return states;
+}
+
 // Retrieve data from the CSV file and execute everything below
 d3.csv('assets/data/data.csv')
   .then(function (data, err) {
@@ -186,6 +196,7 @@ d3.csv('assets/data/data.csv')
 
     // append y axis
     var yAxis = chartGroup.append('g').call(leftAxis);
+
     // append initial circles
     var circlesGroup = chartGroup
       .selectAll('circle')
@@ -199,6 +210,21 @@ d3.csv('assets/data/data.csv')
         return 'stateCircle ' + d.abbr;
       })
       .attr('opacity', '.5');
+
+    // append initial states in the circles
+    var states = chartGroup
+      .selectAll('stateCircle')
+      .data(data)
+      .enter()
+      .append('text')
+      .text(function (d) {
+        return d.abbr;
+      })
+      .attr('x', (d) => xLinearScale(d[chosenXAxis]))
+      .attr('y', (d) => yLinearScale(d[chosenYAxis]) + radius / 5)
+      .attr('font-size', radius / 2)
+      .attr('text-anchor', 'center')
+      .attr('class', 'stateText');
 
     // Create group for  2 x- axis labels
     var labelsGroup = chartGroup
@@ -290,6 +316,15 @@ d3.csv('assets/data/data.csv')
         // updates tooltips with new info
         circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup);
 
+        //updates states info
+        states = updateState(
+          chosenXAxis,
+          chosenYAxis,
+          xLinearScale,
+          yLinearScale,
+          states
+        );
+
         // changes classes to change bold text
         if (chosenXAxis === 'poverty') {
           povertyLabel.classed('active', true).classed('inactive', false);
@@ -329,6 +364,15 @@ d3.csv('assets/data/data.csv')
 
         // updates tooltips with new info
         circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup);
+
+        //updates states info
+        states = updateState(
+          chosenXAxis,
+          chosenYAxis,
+          xLinearScale,
+          yLinearScale,
+          states
+        );
 
         // changes classes to change bold text
         if (chosenYAxis === 'healthcare') {
