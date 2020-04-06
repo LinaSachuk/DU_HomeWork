@@ -6,7 +6,7 @@
 
 .active {
   font-weight: bold;
-  fill: #000;
+  fill: #3aa980;
   transition: fill 0.3s ease-out;
   text-anchor: middle;
 }
@@ -19,20 +19,20 @@
 }
 
 .inactive:hover {
-  fill: #000;
+  fill: #109a80;
   cursor: pointer;
 }
 
 /* font size dependent on radius, see app.js */
 .stateText {
   font-family: sans-serif;
-  fill: #fff;
+  fill: #e83f6c;
   text-anchor: middle;
 }
 
 .stateCircle {
   fill: #89bdd3;
-  stroke: #e3e3e3;
+  stroke: #e83f6c;
 }
 
 .chart {
@@ -48,7 +48,7 @@
   color: #fff;
   text-align: center;
   text-transform: capitalize;
-  background: rgba(0, 0, 0, 0.8);
+  background: #4a6661;
   border-radius: 4px;
 }
 

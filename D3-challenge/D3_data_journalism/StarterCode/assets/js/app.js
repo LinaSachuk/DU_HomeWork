@@ -28,7 +28,7 @@ console.log('I am here!');
 // Initial Params
 var chosenXAxis = 'poverty';
 var chosenYAxis = 'healthcare';
-var radius = 17;
+var radius = 15;
 
 // function used for updating x-scale var upon click on axis label
 function xScale(data, chosenXAxis) {
@@ -197,6 +197,44 @@ d3.csv('assets/data/data.csv')
     // append y axis
     var yAxis = chartGroup.append('g').call(leftAxis);
 
+    // color from http://colrd.com/palette/24070/
+    var colors = [
+      '#E0D0FF',
+      '#FF9DDF',
+      '#cee397',
+      '#a8e6cf',
+      '#E8FFBA',
+      '#9DDFFF',
+      '#c2f0fc',
+      '#cee397',
+      '#fbcffc',
+      '#a8d3da',
+      '#aeefec',
+      '#d4f8e8',
+      '#AEFF9D',
+      '#fafba4',
+      '#DFFF9D',
+      '#ffb0cd',
+      '#aeefec',
+      '#FFEE9D',
+      '#f3ecb8',
+      '#D8FFD0',
+      '#f5cab3',
+      '#bae5e5',
+      '#ffe2ff',
+      '#efb1ff',
+      '#f4eeff',
+      '#dcd6f7',
+      '#97EBDB',
+      '#F3C2CB',
+      '#dcedc1',
+      '#ffd3b6',
+      '#ffaaa5',
+      '#EFFFD0',
+      '#C6FFBA',
+    ];
+    var colorScale = d3.scaleOrdinal().range(colors);
+
     // append initial circles
     var circlesGroup = chartGroup
       .selectAll('circle')
@@ -209,7 +247,11 @@ d3.csv('assets/data/data.csv')
       .attr('class', function (d) {
         return 'stateCircle ' + d.abbr;
       })
-      .attr('opacity', '.5');
+      .attr('opacity', '.5')
+      .style('fill', function (d, i) {
+        // console.log(colorScale(i));
+        return colorScale(i);
+      });
 
     // append initial states in the circles
     var states = chartGroup
@@ -222,7 +264,7 @@ d3.csv('assets/data/data.csv')
       })
       .attr('x', (d) => xLinearScale(d[chosenXAxis]))
       .attr('y', (d) => yLinearScale(d[chosenYAxis]) + radius / 5)
-      .attr('font-size', radius / 2)
+      .attr('font-size', radius / 1.5)
       .attr('text-anchor', 'center')
       .attr('class', 'stateText');
 
