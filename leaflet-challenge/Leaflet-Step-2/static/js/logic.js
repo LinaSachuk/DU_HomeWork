@@ -4,15 +4,19 @@ var queryUrl =
 
 var platesUrl = 'https://raw.githubusercontent.com/fraxen/tectonicplates/master/GeoJSON/PB2002_plates.json'
 
+var boundariesUrl = 'https://raw.githubusercontent.com/fraxen/tectonicplates/master/GeoJSON/PB2002_boundaries.json'
+
 // Perform a GET request to the query URL
 d3.json(queryUrl, function (data) {
     // Once we get a response, send the data.features object to the createFeatures function
-    d3.json(platesUrl, function (platesData) {
+    d3.json(boundariesUrl, function (platesData) {
         createFeatures(data.features, platesData.features);
         console.log('platesData.features:', platesData.features)
     })
     // console.log('data.features:', data.features)
 });
+
+
 
 
 
@@ -35,11 +39,12 @@ function createFeatures(earthquakeData, platesData) {
             radius: f.properties.mag * 6,
             color: "black",
             fillColor: getColor(f.properties.mag),
-            fillOpacity: 0.6,
+            fillOpacity: 0.8,
             weight: 0.5,
             opacity: 1
         }
     };
+
 
 
     // Create a GeoJSON layer containing the features array on the earthquakeData object
@@ -62,12 +67,25 @@ function createFeatures(earthquakeData, platesData) {
     });
     console.log('earthquakes:', earthquakes);
 
+
+
+
     var plates = L.geoJSON(platesData, {
 
+
+        pointToLayer: function (feature, latlng) {
+
+        },
+        color: 'orange',
+        weight: 4,
+        // opacity: 0.5,
+
+
         onEachFeature: function (feature, layer) {
+
             layer.bindPopup(
-                '<h3> PlateName: ' +
-                feature.properties.PlateName +
+                '<h3> PlateA - PlateB : ' +
+                feature.properties.Name +
                 '</h3>');
         }
     });
@@ -81,12 +99,15 @@ function createMap(earthquakes, plates) {
 
 
 
-    var Satelite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-        attribution:
-            'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
-        maxZoom: 18,
-        id: 'mapbox.streets',
-    })
+    var Satellite =
+        L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}',
+            {
+                attribution:
+                    'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+                maxZoom: 18,
+                id: 'mapbox.streets-satellite',
+                accessToken: API_KEY,
+            })
 
 
     var Greyscale =
@@ -113,7 +134,7 @@ function createMap(earthquakes, plates) {
 
     // Define a baseMaps object to hold our base layers
     var baseMaps = {
-        'Satelite': Satelite,
+        'Satellite': Satellite,
         'Greyscale': Greyscale,
         'Terrain': Stamen_Terrain,
         'Streetmap': Streetmap
@@ -124,13 +145,14 @@ function createMap(earthquakes, plates) {
     var overlayMaps = {
         Lines: plates,
         Earthquakes: earthquakes,
+
     };
 
     // Create our map, giving it the greymap and earthquakes layers to display on load
     var myMap = L.map('map', {
         center: [37.09, -95.71],
         zoom: 5,
-        layers: [Satelite, Greyscale, earthquakes],
+        layers: [Satellite, earthquakes, plates],
     });
 
     // Create a layer control
@@ -164,7 +186,6 @@ function createMap(earthquakes, plates) {
     };
 
     legend.addTo(myMap);
-
 
 }
 
